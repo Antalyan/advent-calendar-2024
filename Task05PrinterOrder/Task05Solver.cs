@@ -1,6 +1,6 @@
 ﻿using AdventCalendar2024.Shared;
 
-namespace AdventCalendar2024.Task05Printer;
+namespace AdventCalendar2024.Task05PrinterOrder;
 
 public class Task05Solver : ITaskSolver
 {

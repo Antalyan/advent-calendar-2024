@@ -1,6 +1,6 @@
 ﻿using AdventCalendar2024.Shared;
 
-namespace AdventCalendar2024.Task04Lists;
+namespace AdventCalendar2024.Task04WordOccurrences;
 
 public class Task04Solver : ITaskSolver
 {

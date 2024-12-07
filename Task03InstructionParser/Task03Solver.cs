@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using AdventCalendar2024.Shared;
 
-namespace AdventCalendar2024.Task03Lists;
+namespace AdventCalendar2024.Task03InstructionParser;
 
 public class Task03Solver : ITaskSolver
 {

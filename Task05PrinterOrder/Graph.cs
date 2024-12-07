@@ -1,4 +1,4 @@
-namespace AdventCalendar2024.Task05Printer;
+namespace AdventCalendar2024.Task05PrinterOrder;
 
 public class Graph
 {
