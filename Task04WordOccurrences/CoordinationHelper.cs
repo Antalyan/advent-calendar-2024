@@ -2,7 +2,7 @@ namespace AdventCalendar2024.Task04WordOccurrences;
 
 public static class CoordinationHelper
 {
-    public static (int X, int Y)[] GetLineCoordModifiers()
+    public static Coordinate[] GetLineCoordModifiers()
     {
         return
         [
@@ -13,7 +13,7 @@ public static class CoordinationHelper
         ];
     }
 
-    public static (int X, int Y)[] GetLeftDiagonalCoordModifiers()
+    public static Coordinate[] GetLeftDiagonalCoordModifiers()
     {
         return
         [
@@ -22,7 +22,7 @@ public static class CoordinationHelper
         ];
     }
 
-    public static (int X, int Y)[] GetRightDiagonalCoordModifiers()
+    public static Coordinate[] GetRightDiagonalCoordModifiers()
     {
         return
         [
@@ -31,17 +31,17 @@ public static class CoordinationHelper
         ];
     }
 
-    public static (int X, int Y)[] GetDiagonalCoordModifiers()
+    public static Coordinate[] GetDiagonalCoordModifiers()
     {
         return GetLeftDiagonalCoordModifiers().Concat(GetRightDiagonalCoordModifiers().ToArray()).ToArray();
     }
 
-    public static (int X, int Y)[] GetAllCoordModifiers()
+    public static Coordinate[] GetAllCoordModifiers()
     {
         return GetLineCoordModifiers().Concat(GetDiagonalCoordModifiers().ToArray()).ToArray();
     }
 
-    public static (int X, int Y) GetMirroredCoordModifier(int x, int y)
+    public static Coordinate GetMirroredCoordModifier(int x, int y)
     {
         return (-x, -y);
     }

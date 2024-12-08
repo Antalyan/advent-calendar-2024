@@ -27,28 +27,28 @@ public class Task04Solver : ITaskSolver
         }
     }
 
-    private bool CellIsInside(int x, int y)
+    private bool CellIsInside(Coordinate coordinate)
     {
         int rows = _letters.GetLength(0);
         int cols = _letters.GetLength(1);
-        return x >= 0 && y >= 0 && x < rows && y < cols;
+        return coordinate.X >= 0 && coordinate.Y >= 0 && coordinate.X < rows && coordinate.Y < cols;
     }
 
-    private bool CheckLetterOnPosition(int x, int y, char expectedLetter)
+    private bool CheckLetterOnPosition(Coordinate coordinate, char expectedLetter)
     {
-        return CellIsInside(x, y) && _letters[x, y] == expectedLetter;
+        return CellIsInside(coordinate) && _letters[coordinate.X, coordinate.Y] == expectedLetter;
     }
 
-    private int CountWordsStartingFromCell(int x, int y, string searchedWord)
+    private int CountWordsStartingFromCell(Coordinate coordinate, string searchedWord)
     {
         int words = 0;
         foreach (var (modx, mody) in CoordinationHelper.GetAllCoordModifiers())
         {
-            (int X, int Y) currentPos = (x, y);
+            Coordinate currentPos = (coordinate.X, coordinate.Y);
             bool wordPresent = true;
             foreach (var letter in searchedWord)
             {
-                if (!CheckLetterOnPosition(currentPos.X, currentPos.Y, letter))
+                if (!CheckLetterOnPosition(currentPos, letter))
                 {
                     wordPresent = false;
                     break;
@@ -73,24 +73,24 @@ public class Task04Solver : ITaskSolver
         {
             for (int y = 0; y < _letters.GetLength(1); y++)
             {
-                occurrences += CountWordsStartingFromCell(x, y, word);
+                occurrences += CountWordsStartingFromCell((x, y), word);
             }
         }
 
         return occurrences;
     }
 
-    private bool CheckCrossCenteredInCell(int x, int y, char centralLetter, char borderLetter1, char borderLetter2)
+    private bool CheckCrossCenteredInCell(Coordinate coordinate, char centralLetter, char borderLetter1, char borderLetter2)
     {
-        if (!CheckLetterOnPosition(x, y, centralLetter))
+        if (!CheckLetterOnPosition(coordinate, centralLetter))
         {
             return false;
         }
 
         foreach (var (modx, mody) in CoordinationHelper.GetLeftDiagonalCoordModifiers())
         {
-            (int X, int Y) currentPos = (x + modx, y + mody);
-            if (!CellIsInside(currentPos.X, currentPos.Y))
+            Coordinate currentPos = (coordinate.X + modx, coordinate.Y + mody);
+            if (!CellIsInside(currentPos))
             {
                 return false;
             }
@@ -103,9 +103,9 @@ public class Task04Solver : ITaskSolver
 
             char mirrorExpectedLetter = letterOnCurrentPos == borderLetter1 ? borderLetter2 : borderLetter1;
             var mirrorCoord = CoordinationHelper.GetMirroredCoordModifier(modx, mody);
-            (int X, int Y) mirroredPos = (x + mirrorCoord.X, y + mirrorCoord.Y);
+            Coordinate mirroredPos = (coordinate.X + mirrorCoord.X, coordinate.Y + mirrorCoord.Y);
 
-            if (!CheckLetterOnPosition(mirroredPos.X, mirroredPos.Y, mirrorExpectedLetter))
+            if (!CheckLetterOnPosition(mirroredPos, mirrorExpectedLetter))
             {
                 return false;
             }
@@ -121,7 +121,7 @@ public class Task04Solver : ITaskSolver
         {
             for (int y = 1; y < _letters.GetLength(1) - 1; y++)
             {
-                if (CheckCrossCenteredInCell(x, y, centralLetter, borderLetter1, borderLetter2))
+                if (CheckCrossCenteredInCell((x, y), centralLetter, borderLetter1, borderLetter2))
                 {
                     occurrences += 1;
                 }

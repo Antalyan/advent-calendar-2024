@@ -2,14 +2,11 @@
 
 namespace AdventCalendar2024.Task06GuardMap;
 
-using Coordinate = (int X, int Y);
-
 public class Task06Solver : ITaskSolver
 {
     private readonly HashSet<Coordinate> _obstacles = new();
-    private readonly HashSet<Coordinate> _visitedTiles = new();
-    private Coordinate startPosition;
-    private Coordinate maxPosition;
+    private Coordinate _startPosition;
+    private Coordinate _maxPosition;
 
     public void LoadTaskDataFromFile(string filePath)
     {
@@ -28,37 +25,40 @@ public class Task06Solver : ITaskSolver
                         _obstacles.Add((charPosition, lineNumber));
                         break;
                     case '^':
-                        startPosition = (charPosition, lineNumber);
+                        _startPosition = (charPosition, lineNumber);
                         break;
                 }
             }
 
-            maxPosition = (line.Length - 1, lineNumber);
+            _maxPosition = (line.Length - 1, lineNumber);
             lineNumber++;
         }
     }
 
     private int GetVisitedTileCount()
     {
-        Walker walker = new Walker(maxPosition, _obstacles);
-        walker.WalkThroughField(startPosition);
+        Walker walker = new Walker(_maxPosition, _obstacles);
+        walker.WalkThroughField(_startPosition);
         return walker.VisitedTiles.Select(tile => tile.coordinate).ToHashSet().Count;
     }
-    
+
     private int GetPossibleObstacleCount()
     {
-        Walker initialWalker = new Walker(maxPosition, _obstacles);
-        initialWalker.WalkThroughField(startPosition);
+        Walker initialWalker = new Walker(_maxPosition, _obstacles);
+        initialWalker.WalkThroughField(_startPosition);
 
         int possibleObstacleCount = 0;
-        foreach (var walkedTile in initialWalker.VisitedTiles.Select(tile => tile.coordinate).ToHashSet().Where(tile => tile != startPosition))
+        foreach (var walkedTile in initialWalker.VisitedTiles.Select(tile => tile.coordinate).ToHashSet()
+                     .Where(tile => tile != _startPosition))
         {
             var obstaclesWithAddedObstacle = new HashSet<Coordinate>(_obstacles) { walkedTile };
-            Walker walkerWithCycles = new Walker(maxPosition, obstaclesWithAddedObstacle);
-            if (!walkerWithCycles.WalkThroughFieldWithCycleCheck(startPosition))
+            Walker walkerWithCycles = new Walker(_maxPosition, obstaclesWithAddedObstacle);
+            if (!walkerWithCycles.WalkThroughFieldWithCycleCheck(_startPosition))
             {
                 possibleObstacleCount++;
-            };
+            }
+
+            ;
         }
 
         return possibleObstacleCount;
@@ -66,9 +66,7 @@ public class Task06Solver : ITaskSolver
 
     public void SolveTask()
     {
-        // WalkThroughField();
         Console.WriteLine($"Visited tiles: {GetVisitedTileCount()}");
         Console.WriteLine($"Possible obstacle tiles to cause loop: {GetPossibleObstacleCount()}");
-        // Console.WriteLine($"Middle corrected sequence score: {CountMiddleNumbersOfFixedSequences()}");
     }
 }

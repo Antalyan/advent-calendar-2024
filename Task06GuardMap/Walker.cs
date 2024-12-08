@@ -1,6 +1,5 @@
 namespace AdventCalendar2024.Task06GuardMap;
 
-using Coordinate = (int X, int Y);
 using VisitedCoordinate = ((int X, int Y) coordinate, Direction Direction);
 
 public class Walker(Coordinate maxPosition, HashSet<Coordinate> obstacles)

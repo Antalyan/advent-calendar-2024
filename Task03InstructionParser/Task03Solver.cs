@@ -21,7 +21,7 @@ public class Task03Solver : ITaskSolver
 
     private void UpdateScore(string inputString, ref int scoreToUpdate)
     {
-        var numberPattern = @"\d{1,3}";
+        const string numberPattern = @"\d{1,3}";
         var numMatches = Regex.Matches(inputString, numberPattern).Select(m => int.Parse(m.Value))
             .ToArray();
         scoreToUpdate += numMatches[0] * numMatches[1];
@@ -29,7 +29,7 @@ public class Task03Solver : ITaskSolver
 
     private int EvaluateInput()
     {
-        string topPattern = @"mul\(\d{1,3},\d{1,3}\)";
+        const string topPattern = @"mul\(\d{1,3},\d{1,3}\)";
         int score = 0;
         foreach (Match mulMatch in Regex.Matches(_inputString, topPattern))
         {
@@ -41,7 +41,7 @@ public class Task03Solver : ITaskSolver
 
     private int EvaluateInputWithEnables()
     {
-        string topPattern = @"mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\)";
+        const string topPattern = @"mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\)";
         int score = 0;
         bool instructionsEnabled = true;
         foreach (Match mulMatch in Regex.Matches(_inputString, topPattern))
