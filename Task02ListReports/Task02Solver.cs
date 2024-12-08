@@ -43,10 +43,6 @@ public class Task02Solver : ITaskSolver
         Console.WriteLine($"Reports in list: {_reports.Count}");
     }
 
-    private void PrepareBeforeTask()
-    {
-    }
-
     private int GetFailureIndex(List<int> report, bool shouldBeAscending)
     {
         for (int i = 1; i < report.Count; i++)
@@ -128,7 +124,6 @@ public class Task02Solver : ITaskSolver
 
     public void SolveTask()
     {
-        PrepareBeforeTask();
         Console.WriteLine($"Safe reports: {_reports.Count(r => IsReportSafe(r))}");
         Console.WriteLine($"Safe reports with toleration 1 (linear): {GetSafetyWithToleranceLinear()}");
         Console.WriteLine($"Safe reports with toleration 1 (quadratic): {GetSafetyWithToleranceQuadratic()}");

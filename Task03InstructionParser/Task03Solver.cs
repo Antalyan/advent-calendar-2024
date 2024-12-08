@@ -72,14 +72,9 @@ public class Task03Solver : ITaskSolver
 
         return score;
     }
-
-    private void PrepareBeforeTask()
-    {
-    }
-
+    
     public void SolveTask()
     {
-        PrepareBeforeTask();
         Console.WriteLine($"Multiplication sum result: {EvaluateInput()}");
         Console.WriteLine($"Multiplication sum result with enables: {EvaluateInputWithEnables()}");
     }

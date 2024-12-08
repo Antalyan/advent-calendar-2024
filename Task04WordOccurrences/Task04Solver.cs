@@ -130,14 +130,9 @@ public class Task04Solver : ITaskSolver
 
         return occurrences;
     }
-
-    private void PrepareBeforeTask()
-    {
-    }
-
+    
     public void SolveTask()
     {
-        PrepareBeforeTask();
         Console.WriteLine($"XMAS Word count: {CountWordInAllDirections("XMAS")}");
         Console.WriteLine($"MAS cross count: {CountCrossWords('A', 'M', 'S')}");
     }

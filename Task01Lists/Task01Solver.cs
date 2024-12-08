@@ -42,12 +42,6 @@ public class Task01Solver: ITaskSolver
         Console.WriteLine($"Elements in list: {_listA.Count}");
     }
 
-    private void PrepareBeforeTask()
-    {
-        _listA.Sort();
-        _listB.Sort();
-    }
-
     private int GetListDistance()
     {
         return Enumerable.Range(0, _listA.Count).Aggregate(0, (acc, index) => acc + int.Abs(_listA[index] - _listB[index]));
@@ -78,7 +72,8 @@ public class Task01Solver: ITaskSolver
 
     public void SolveTask()
     {
-        PrepareBeforeTask();
+        _listA.Sort();
+        _listB.Sort();
         Console.WriteLine($"List distance is {GetListDistance()}");
         Console.WriteLine($"Similarity score is {GetSimilarityScore()}");
     }
