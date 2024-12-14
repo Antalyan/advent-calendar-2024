@@ -12,7 +12,7 @@ public class TopographicalVertex(Coordinate coordinates, int value)
         return HashCode.Combine(coordinates.X, coordinates.Y);
     }
     
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is TopographicalVertex other)
         {

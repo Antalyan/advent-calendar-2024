@@ -6,24 +6,6 @@ public class Task10Solver : ITaskSolver
 {
     private readonly TopographicalGraph _map = new();
 
-    // TODO: possibly remove as try to get from set is enough
-    private List<Coordinate> GetSurroundingPositionsInLineMap(Coordinate coordinate, List<string> lineMap)
-    {
-        List<Coordinate> surroundingPositions = new();
-        foreach (var coordModifier in CoordinationHelper.GetLineCoordModifiers())
-        {
-            Coordinate newPos = (coordinate.X + coordModifier.X, coordinate.Y + coordModifier.Y);
-            if (newPos.X < 0 || newPos.Y < 0 || newPos.X >= lineMap[0].Length || newPos.Y >= lineMap.Count)
-            {
-                continue;
-            }
-
-            surroundingPositions.Add(newPos);
-        }
-
-        return surroundingPositions;
-    }
-
     public void LoadTaskDataFromFile(string filePath)
     {
         var lines = File.ReadLines(filePath).ToList();
@@ -38,11 +20,12 @@ public class Task10Solver : ITaskSolver
 
         foreach (TopographicalVertex vertex in _map.Vertices)
         {
-            var surroundingPositions =
-                GetSurroundingPositionsInLineMap((vertex.Coordinates.X, vertex.Coordinates.Y), lines);
-            foreach (var position in surroundingPositions)
+            foreach (var positionMod in CoordinationHelper.GetLineCoordModifiers())
             {
-                if (_map.Vertices.TryGetValue(new TopographicalVertex((position.X, position.Y), -1),
+                Coordinate neighborPosition =
+                    (vertex.Coordinates.X + positionMod.X, vertex.Coordinates.Y + positionMod.Y);
+                // No need to check borders since out of border access will simply fail to find the vertex in the set
+                if (_map.Vertices.TryGetValue(new TopographicalVertex((neighborPosition.X, neighborPosition.Y), -1),
                         out TopographicalVertex? neighborVertex))
                 {
                     vertex.SurroundingVertices.Add(neighborVertex);
