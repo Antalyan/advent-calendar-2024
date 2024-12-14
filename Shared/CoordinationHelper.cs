@@ -1,4 +1,4 @@
-namespace AdventCalendar2024.Task04WordOccurrences;
+namespace AdventCalendar2024.Shared;
 
 public static class CoordinationHelper
 {
