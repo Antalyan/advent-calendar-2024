@@ -4,7 +4,9 @@ namespace AdventCalendar2024.Task11StonesState;
 
 public class Task11Solver : ITaskSolver
 {
-    private List<long> _stones = new();
+    private readonly List<long> _stones = new();
+    // (Stone, remaining gens): number of children in of stone after the next remaining gens
+    private readonly Dictionary<(long, int), long> _cache = new();
     
     public void LoadTaskDataFromFile(string filePath)
     {
@@ -12,50 +14,57 @@ public class Task11Solver : ITaskSolver
         var numberStrings = reader.ReadLine()!.Split(" ");
         _stones.AddRange(numberStrings.Select(long.Parse));
     }
-
-    // Returns number of added positions
-    private List<long> ComputeNextStoneGeneration()
+    
+    private long CountNextGens(long stoneValue, int remainingGens)
     {
-        List<long> nextGen = new();
-        foreach (var stoneValue in _stones)
+        if (remainingGens == 0)
         {
-            if (stoneValue == 0)
-            {
-                nextGen.Add(1);
-            } else if (stoneValue > 0 && (int)Math.Log10(stoneValue) % 2 == 1)
-            {
-                int length = (int)Math.Log10(stoneValue) + 1; 
-                int halfLength = length / 2;
+            return 1; 
+        }
 
-                long divisor = (long)Math.Pow(10, halfLength); 
-                long leftValue = stoneValue / divisor;        
-                long rightValue = stoneValue % divisor;       
+        if (_cache.TryGetValue((stoneValue, remainingGens), out var cachedResult))
+        {
+            return cachedResult;
+        }
 
-                nextGen.Add(leftValue);
-                nextGen.Add(rightValue);
+        long result;
+
+        if (stoneValue == 0)
+        {
+            result = CountNextGens(1, remainingGens - 1);
+        }
+        else
+        {
+            int numDigits = (int)Math.Log10(stoneValue) + 1;
+
+            if (numDigits % 2 == 0)
+            {
+                long halfLength = numDigits / 2;
+                long divisor = (long)Math.Pow(10, halfLength);
+
+                long leftValue = stoneValue / divisor;
+                long rightValue = stoneValue % divisor;
+
+                result = CountNextGens(leftValue, remainingGens - 1) + CountNextGens(rightValue, remainingGens - 1);
             }
             else
             {
-                nextGen.Add(stoneValue * 2024);
+                result = CountNextGens(stoneValue * 2024, remainingGens - 1);
             }
         }
-        return nextGen;
-    }
 
-    private void IterateStones(int iterCount)
+        _cache[(stoneValue, remainingGens)] = result;
+        return result;
+    }
+    
+    private long IterateStones(int iterCount)
     {
-        for (int iterNum = 0; iterNum < iterCount; iterNum++)
-        {
-            _stones = ComputeNextStoneGeneration();
-            Console.WriteLine($"Stone count: {_stones.Count} in {iterNum}");
-            // Console.WriteLine($"Stones after sequence: {string.Join(", ", _stones)}");
-        }
+        return _stones.Select(s => CountNextGens(s, iterCount)).Sum();
     }
 
 
     public void SolveTask()
     {
-        IterateStones(75);
-        Console.WriteLine($"Stone count: {_stones.Count}");
+        Console.WriteLine($"Stone count: {IterateStones(75)}");
     }
 }
