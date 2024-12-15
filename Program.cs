@@ -7,6 +7,6 @@ string dayNumber = "05";
 string dayName = "PrinterOrder";
 bool useSampleData = true;
 string sourceFile = Path.Combine(sourceDirectory, $@"Task{dayNumber}{dayName}\Data{(useSampleData ? "Sample" : "")}{dayNumber}.txt");
-ITaskSolver taskSolver = new Task10Solver();
+ITaskSolver taskSolver = new Task11Solver();
 taskSolver.LoadTaskDataFromFile(sourceFile);
 taskSolver.SolveTask();
