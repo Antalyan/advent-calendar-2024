@@ -17,12 +17,12 @@ public abstract class TaskUnitTestCommon
     public virtual void P1Test(string fileName, long expectedResult)
     {
         var solver = CreateSolver(fileName);
-        Assert.Equal(solver.SolveTaskP1(), expectedResult);
+        Assert.Equal(expectedResult, solver.SolveTaskP1());
     }
     
     public virtual void P2Test(string fileName, long expectedResult)
     {
         var solver = CreateSolver(fileName);
-        Assert.Equal(solver.SolveTaskP2(), expectedResult);
+        Assert.Equal(expectedResult, solver.SolveTaskP2());
     }
 }
