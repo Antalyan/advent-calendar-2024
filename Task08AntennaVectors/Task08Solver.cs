@@ -38,23 +38,17 @@ public class Task08Solver : ITaskSolver
         }
     }
 
-    private bool CoordinateIsInside(Coordinate coordinate)
-    {
-        return coordinate.X >= 0 && coordinate.Y >= 0 && coordinate.X <= _maxPosition.X &&
-               coordinate.Y <= _maxPosition.Y;
-    }
-
     private void AddRelatedAntiNodePair(Coordinate coordA, Coordinate coordB, HashSet<Coordinate> antiNodePositions)
     {
         Coordinate vector = (coordB.X - coordA.X, coordB.Y - coordA.Y);
         Coordinate newPositionA = (coordA.X - vector.X, coordA.Y - vector.Y);
-        if (CoordinateIsInside(newPositionA))
+        if (newPositionA.IsInsideGrid(_maxPosition))
         {
             antiNodePositions.Add(newPositionA);
         }
 
         Coordinate newPositionB = (coordB.X + vector.X, coordB.Y + vector.Y);
-        if (CoordinateIsInside(newPositionB))
+        if (newPositionB.IsInsideGrid(_maxPosition))
         {
             antiNodePositions.Add(newPositionB);
         }
@@ -66,14 +60,14 @@ public class Task08Solver : ITaskSolver
         antiNodePositions.Add(coordB);
         Coordinate vector = (coordB.X - coordA.X, coordB.Y - coordA.Y);
         Coordinate newPositionA = (coordA.X - vector.X, coordA.Y - vector.Y);
-        while (CoordinateIsInside(newPositionA))
+        while (newPositionA.IsInsideGrid(_maxPosition))
         {
             antiNodePositions.Add(newPositionA);
             newPositionA = (newPositionA.X - vector.X, newPositionA.Y - vector.Y);
         }
 
         Coordinate newPositionB = (coordB.X + vector.X, coordB.Y + vector.Y);
-        while (CoordinateIsInside(newPositionB))
+        while (newPositionB.IsInsideGrid(_maxPosition))
         {
             antiNodePositions.Add(newPositionB);
             newPositionB = (newPositionB.X + vector.X, newPositionB.Y + vector.Y);

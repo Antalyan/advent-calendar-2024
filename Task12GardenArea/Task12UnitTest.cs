@@ -16,6 +16,7 @@ public class Task12UnitTest
     [Theory]
     [InlineData("T12-Sample01", 140)]
     [InlineData("T12-Sample02", 1930)]
+    [InlineData("T12-Fin", 1431440)]
     public void P1Test(string fileName, long expectedResult)
     {
         var solver = CreateSolver(fileName);
@@ -28,6 +29,7 @@ public class Task12UnitTest
     [InlineData("T12-Sample03", 236)]
     [InlineData("T12-Sample04", 368)]
     [InlineData("T12-Sample05", 436)]
+    [InlineData("T12-Fin", 869070)]
     public void P2Test(string fileName, long expectedResult)
     {
         var solver = CreateSolver(fileName);

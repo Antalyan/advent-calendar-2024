@@ -10,11 +10,6 @@ public class Walker(Coordinate maxPosition, HashSet<Coordinate> obstacles)
     public HashSet<VisitedCoordinate> VisitedTiles { get; } = new();
     private Coordinate currentPosition;
 
-    private bool CoordinateIsInside(Coordinate coordinate)
-    {
-        return coordinate.X >= 0 && coordinate.Y >= 0 && coordinate.X <= maxPosition.X && coordinate.Y <= maxPosition.Y;
-    }
-
     private bool WalkInDirection(Direction direction)
     {
         Coordinate coordModifier = direction switch
@@ -25,7 +20,7 @@ public class Walker(Coordinate maxPosition, HashSet<Coordinate> obstacles)
             Direction.Left => (-1, 0),
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
-        while (CoordinateIsInside(currentPosition))
+        while (currentPosition.IsInsideGrid(maxPosition))
         {
             Coordinate nextPosition = (currentPosition.X + coordModifier.X, currentPosition.Y + coordModifier.Y);
             if (Obstacles.Contains(nextPosition))

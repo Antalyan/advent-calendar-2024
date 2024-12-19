@@ -26,13 +26,6 @@ public class Task12Solver : ITaskSolver
         }
     }
 
-    //TODO: move to common
-    private bool CoordinateIsInside(Coordinate coordinate)
-    {
-        return coordinate.X >= 0 && coordinate.Y >= 0 && coordinate.X <= _maxPosition.X &&
-               coordinate.Y <= _maxPosition.Y;
-    }
-
     private int CountClusterPrice(Coordinate clusterStartPos, HashSet<Coordinate> visited)
     {
         int perimeter = 0;
@@ -40,24 +33,22 @@ public class Task12Solver : ITaskSolver
         Queue<Coordinate> coordQueue = new();
         coordQueue.Enqueue(clusterStartPos);
 
-        while (coordQueue.Count > 0)
+        while (coordQueue.TryDequeue(out var currentPosition))
         {
-            var currentPosition = coordQueue.Dequeue();
             foreach (var positionMod in CoordinationHelper.GetLineCoordModifiers())
             {
                 Coordinate neighborPosition =
                     (currentPosition.X + positionMod.X, currentPosition.Y + positionMod.Y);
-                if (CoordinateIsInside(neighborPosition) && _garden[neighborPosition] == _garden[currentPosition])
+                if (neighborPosition.IsInsideGrid(_maxPosition) && _garden[neighborPosition] == _garden[currentPosition])
                 {
-                    if (!seen.Contains(neighborPosition))
+                    if (seen.Add(neighborPosition))
                     {
                         coordQueue.Enqueue(neighborPosition);
-                        seen.Add(neighborPosition);
                     }
                 }
                 else
                 {
-                    perimeter += 1;
+                    perimeter++;
                 }
             }
         }
@@ -68,29 +59,26 @@ public class Task12Solver : ITaskSolver
 
     private int CountAdvancedClusterPrice(Coordinate clusterStartPos, HashSet<Coordinate> visited)
     {
-        int perimeter = 0;
+        int linePerimeter = 0;
 
         Dictionary<Coordinate, HashSet<Coordinate>> ignoredDirectionMods = new();
         HashSet<Coordinate> seen = [clusterStartPos];
-        Queue<Coordinate> coordQueue = new();
-        coordQueue.Enqueue(clusterStartPos);
+        PriorityQueue<Coordinate, Coordinate> coordQueue = new();
+        coordQueue.Enqueue(clusterStartPos, clusterStartPos);
 
-        while (coordQueue.Count > 0)
+        while (coordQueue.TryDequeue(out var currentPosition, out _))
         {
-            var currentPosition = coordQueue.Dequeue();
-
             HashSet<Coordinate> currentLinePositions = new();
 
             foreach (var positionMod in CoordinationHelper.GetLineCoordModifiers())
             {
                 Coordinate neighborPosition =
                     (currentPosition.X + positionMod.X, currentPosition.Y + positionMod.Y);
-                if (CoordinateIsInside(neighborPosition) && _garden[neighborPosition] == _garden[currentPosition])
+                if (neighborPosition.IsInsideGrid(_maxPosition) && _garden[neighborPosition] == _garden[currentPosition])
                 {
-                    if (!seen.Contains(neighborPosition))
+                    if (seen.Add(neighborPosition))
                     {
-                        coordQueue.Enqueue(neighborPosition);
-                        seen.Add(neighborPosition);
+                        coordQueue.Enqueue(neighborPosition, neighborPosition);
                     }
                 }
                 else
@@ -100,7 +88,7 @@ public class Task12Solver : ITaskSolver
                     if (!ignoredDirectionMods.TryGetValue(currentPosition, out var ignoredDirs) ||
                         !ignoredDirs.TryGetValue(positionMod, out var _))
                     {
-                        perimeter += 1;
+                        linePerimeter += 1;
                     }
                 }
             }
@@ -117,29 +105,23 @@ public class Task12Solver : ITaskSolver
         }
 
         visited.UnionWith(seen);
-        return perimeter * seen.Count;
+        return linePerimeter * seen.Count;
     }
-
-    private int CountAreaPrice()
+    
+    private int CountAreaPrice(Func<Coordinate, HashSet<Coordinate>, int> countFunction)
     {
-        HashSet<Coordinate> visited = new();
+        HashSet<Coordinate> visited = [];
         // C# defers where execution (i.e. visited condition is not called until the particular key is needed)
-        return _garden.Keys.Where(pos => !visited.Contains(pos)).Sum(pos => CountClusterPrice(pos, visited));
-    }
-
-    private int CountAdvancedAreaPrice()
-    {
-        HashSet<Coordinate> visited = new();
-        return _garden.Keys.Where(pos => !visited.Contains(pos)).Sum(pos => CountAdvancedClusterPrice(pos, visited));
+        return _garden.Keys.Where(pos => !visited.Contains(pos)).Sum(pos => countFunction(pos, visited));
     }
 
     public long SolveTaskP1()
     {
-        return CountAreaPrice();
+        return CountAreaPrice(CountClusterPrice);
     }
 
     public long SolveTaskP2()
     {
-        return CountAdvancedAreaPrice();
+        return CountAreaPrice(CountAdvancedClusterPrice);
     }
 }

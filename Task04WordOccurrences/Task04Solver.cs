@@ -27,16 +27,10 @@ public class Task04Solver : ITaskSolver
         }
     }
 
-    private bool CellIsInside(Coordinate coordinate)
-    {
-        int rows = _letters.GetLength(0);
-        int cols = _letters.GetLength(1);
-        return coordinate.X >= 0 && coordinate.Y >= 0 && coordinate.X < rows && coordinate.Y < cols;
-    }
-
     private bool CheckLetterOnPosition(Coordinate coordinate, char expectedLetter)
     {
-        return CellIsInside(coordinate) && _letters[coordinate.X, coordinate.Y] == expectedLetter;
+        return coordinate.IsInsideGrid((_letters.GetLength(0), _letters.GetLength(1))) 
+               && _letters[coordinate.X, coordinate.Y] == expectedLetter;
     }
 
     private int CountWordsStartingFromCell(Coordinate coordinate, string searchedWord)
@@ -90,7 +84,7 @@ public class Task04Solver : ITaskSolver
         foreach (var (modx, mody) in CoordinationHelper.GetLeftDiagonalCoordModifiers())
         {
             Coordinate currentPos = (coordinate.X + modx, coordinate.Y + mody);
-            if (!CellIsInside(currentPos))
+            if (!currentPos.IsInsideGrid((_letters.GetLength(0), _letters.GetLength(1))))
             {
                 return false;
             }
