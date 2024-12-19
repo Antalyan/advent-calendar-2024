@@ -63,10 +63,14 @@ public class Task06Solver : ITaskSolver
 
         return possibleObstacleCount;
     }
-
-    public void SolveTask()
+    
+    public long SolveTaskP1()
     {
-        Console.WriteLine($"Visited tiles: {GetVisitedTileCount()}");
-        Console.WriteLine($"Possible obstacle tiles to cause loop: {GetPossibleObstacleCount()}");
+        return GetVisitedTileCount();
+    }
+    
+    public long SolveTaskP2()
+    {
+        return GetPossibleObstacleCount();
     }
 }

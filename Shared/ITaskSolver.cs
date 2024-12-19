@@ -3,5 +3,7 @@
 public interface ITaskSolver
 {
     public void LoadTaskDataFromFile(string filePath);
-    public void SolveTask();
+    public long SolveTaskP1();
+    public long SolveTaskP2();
+
 }

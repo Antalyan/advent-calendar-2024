@@ -70,11 +70,17 @@ public class Task01Solver: ITaskSolver
         });
     }
 
-    public void SolveTask()
+    public long SolveTaskP1()
     {
         _listA.Sort();
         _listB.Sort();
-        Console.WriteLine($"List distance is {GetListDistance()}");
-        Console.WriteLine($"Similarity score is {GetSimilarityScore()}");
+        return GetListDistance();
+    }
+    
+    public long SolveTaskP2()
+    {
+        _listA.Sort();
+        _listB.Sort();
+        return GetSimilarityScore();
     }
 }

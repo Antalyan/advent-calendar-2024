@@ -1,12 +1,10 @@
 ﻿using AdventCalendar2024.Shared;
-using AdventCalendar2024.Task01Lists;
-using AdventCalendar2024.Task05PrinterOrder;
+using AdventCalendar2024.Task12GardenArea;
 
-string sourceDirectory = "";
-string dayNumber = "05";
-string dayName = "PrinterOrder";
-bool useSampleData = true;
-string sourceFile = Path.Combine(sourceDirectory, $@"Task{dayNumber}{dayName}\Data{(useSampleData ? "Sample" : "")}{dayNumber}.txt");
-ITaskSolver taskSolver = new Task11Solver();
+string sourceDirectory = Constants.DataFilePath;
+string dayNumber = "12";
+string sourceFile = Path.Combine(sourceDirectory, $"T{dayNumber}-Fin.txt");
+ITaskSolver taskSolver = new Task12Solver();
 taskSolver.LoadTaskDataFromFile(sourceFile);
-taskSolver.SolveTask();
+Console.WriteLine(taskSolver.SolveTaskP1());
+Console.WriteLine(taskSolver.SolveTaskP2());

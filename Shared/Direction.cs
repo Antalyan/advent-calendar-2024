@@ -1,4 +1,4 @@
-namespace AdventCalendar2024.Task06GuardMap;
+namespace AdventCalendar2024.Shared;
 
 public enum Direction
 {

@@ -121,11 +121,14 @@ public class Task02Solver : ITaskSolver
             return false;
         });
     }
-
-    public void SolveTask()
+    
+    public long SolveTaskP1()
     {
-        Console.WriteLine($"Safe reports: {_reports.Count(r => IsReportSafe(r))}");
-        Console.WriteLine($"Safe reports with toleration 1 (linear): {GetSafetyWithToleranceLinear()}");
-        Console.WriteLine($"Safe reports with toleration 1 (quadratic): {GetSafetyWithToleranceQuadratic()}");
+        return GetSafetyWithToleranceLinear();
+    }
+    
+    public long SolveTaskP2()
+    {
+        return GetSafetyWithToleranceQuadratic();
     }
 }

@@ -82,10 +82,14 @@ public class Task05Solver : ITaskSolver
             return prev;
         });
     }
-
-    public void SolveTask()
+    
+    public long SolveTaskP1()
     {
-        Console.WriteLine($"Middle sequence score: {CountMiddleNumbersOfRightSequences()}");
-        Console.WriteLine($"Middle corrected sequence score: {CountMiddleNumbersOfFixedSequences()}");
+        return CountMiddleNumbersOfRightSequences();
+    }
+    
+    public long SolveTaskP2()
+    {
+        return CountMiddleNumbersOfFixedSequences();
     }
 }

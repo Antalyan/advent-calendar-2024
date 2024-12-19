@@ -33,12 +33,16 @@ public class Task10Solver : ITaskSolver
             }
         }
     }
-
-
-    public void SolveTask()
+    
+    public long SolveTaskP1()
     {
-        var (score, paths) = _map.CountPathSumsBfs(0, 9);
-        Console.WriteLine($"Different vertices sum: {score}");
-        Console.WriteLine($"Different paths: {paths}");
+        var (score, _) = _map.CountPathSumsBfs(0, 9);
+        return score;
+    }
+    
+    public long SolveTaskP2()
+    {
+        var (_, paths) = _map.CountPathSumsBfs(0, 9);
+        return paths;
     }
 }

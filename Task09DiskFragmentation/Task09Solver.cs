@@ -11,11 +11,16 @@ public class Task09Solver : ITaskSolver
         using var reader = new StreamReader(filePath);
         _diskMap = new DiskMap(reader.ReadLine() ?? throw new InvalidOperationException("Empty disk map given"));
     }
-
-    public void SolveTask()
+    
+    public long SolveTaskP1()
     {
-        // _diskMap.DefragmentDiskByBlocks();
+        _diskMap.DefragmentDiskByBlocks();
+        return _diskMap.CountCheckSum();
+    }
+    
+    public long SolveTaskP2()
+    {
         _diskMap.DefragmentDiskByFiles();
-        Console.WriteLine($"Check sum: { _diskMap.CountCheckSum()}");
+        return _diskMap.CountCheckSum();
     }
 }

@@ -1,3 +1,5 @@
+using AdventCalendar2024.Shared;
+
 namespace AdventCalendar2024.Task06GuardMap;
 
 using VisitedCoordinate = ((int X, int Y) coordinate, Direction Direction);

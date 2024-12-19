@@ -103,10 +103,14 @@ public class Task08Solver : ITaskSolver
 
         return antiNodePositions.Count;
     }
-
-    public void SolveTask()
+    
+    public long SolveTaskP1()
     {
-        Console.WriteLine($"Anti node positions: {CountAntiNodePositions(true)}");
-        Console.WriteLine($"Anti node positions extended: {CountAntiNodePositions(false)}");
+        return CountAntiNodePositions(true);
+    }
+    
+    public long SolveTaskP2()
+    {
+        return CountAntiNodePositions(false);
     }
 }

@@ -51,10 +51,14 @@ public class Task07Solver : ITaskSolver
         var solvableEquations = _equations.Where(eq => IsEquationSolvable(eq, 0, null, allowConcat));
         return solvableEquations.Sum(eq => eq.Result);
     }
-
-    public void SolveTask()
+    
+    public long SolveTaskP1()
     {
-        Console.WriteLine($"Solvable equations sum with + or *: {CountSolvableEquationsSum()}");
-        Console.WriteLine($"Solvable equations sum with +, * or concat: {CountSolvableEquationsSum(true)}");
+        return CountSolvableEquationsSum();
+    }
+    
+    public long SolveTaskP2()
+    {
+        return CountSolvableEquationsSum(true);
     }
 }

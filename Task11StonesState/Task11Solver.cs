@@ -63,8 +63,13 @@ public class Task11Solver : ITaskSolver
     }
 
 
-    public void SolveTask()
+    public long SolveTaskP1()
     {
-        Console.WriteLine($"Stone count: {IterateStones(75)}");
+        return IterateStones(25);
+    }
+    
+    public long SolveTaskP2()
+    {
+        return IterateStones(75);
     }
 }
