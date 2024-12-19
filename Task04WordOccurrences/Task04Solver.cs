@@ -27,10 +27,14 @@ public class Task04Solver : ITaskSolver
         }
     }
 
+    private bool IsInsideGrid(Coordinate coordinate)
+    {
+        return coordinate.IsInsideGrid((_letters.GetLength(0) - 1, _letters.GetLength(1) - 1));
+    }
+
     private bool CheckLetterOnPosition(Coordinate coordinate, char expectedLetter)
     {
-        return coordinate.IsInsideGrid((_letters.GetLength(0), _letters.GetLength(1))) 
-               && _letters[coordinate.X, coordinate.Y] == expectedLetter;
+        return IsInsideGrid(coordinate) && _letters[coordinate.X, coordinate.Y] == expectedLetter;
     }
 
     private int CountWordsStartingFromCell(Coordinate coordinate, string searchedWord)
@@ -74,7 +78,8 @@ public class Task04Solver : ITaskSolver
         return occurrences;
     }
 
-    private bool CheckCrossCenteredInCell(Coordinate coordinate, char centralLetter, char borderLetter1, char borderLetter2)
+    private bool CheckCrossCenteredInCell(Coordinate coordinate, char centralLetter, char borderLetter1,
+        char borderLetter2)
     {
         if (!CheckLetterOnPosition(coordinate, centralLetter))
         {
@@ -84,7 +89,7 @@ public class Task04Solver : ITaskSolver
         foreach (var (modx, mody) in CoordinationHelper.GetLeftDiagonalCoordModifiers())
         {
             Coordinate currentPos = (coordinate.X + modx, coordinate.Y + mody);
-            if (!currentPos.IsInsideGrid((_letters.GetLength(0), _letters.GetLength(1))))
+            if (!IsInsideGrid(coordinate))
             {
                 return false;
             }
@@ -124,12 +129,12 @@ public class Task04Solver : ITaskSolver
 
         return occurrences;
     }
-    
+
     public long SolveTaskP1()
     {
         return CountWordInAllDirections("XMAS");
     }
-    
+
     public long SolveTaskP2()
     {
         return CountCrossWords('A', 'M', 'S');

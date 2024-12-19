@@ -1,26 +1,26 @@
 using AdventCalendar2024.Shared;
 using Xunit;
 
-namespace AdventCalendar2024.Task01Lists;
+namespace AdventCalendar2024.Task03InstructionParser;
 
-public class Task01UnitTest: TaskUnitTestCommon
+public class Task03UnitTest: TaskUnitTestCommon
 {
     protected override ITaskSolver CreateTaskSolver()
     {
-        return new Task01Solver();
+        return new Task03Solver();
     }
 
     [Theory]
-    [InlineData("T01-Sample01", 11)]
-    [InlineData("T01-Fin", 1319616)]
+    [InlineData("T03-Sample01", 161)]
+    [InlineData("T03-Fin", 187825547)]
     public override void P1Test(string fileName, long expectedResult)
     {
         base.P1Test(fileName, expectedResult);
     }
     
     [Theory]
-    [InlineData("T01-Sample01", 31)]
-    [InlineData("T01-Fin", 27267728)]
+    [InlineData("T03-Sample01", 48)]
+    [InlineData("T03-Fin", 85508223)]
     public override void P2Test(string fileName, long expectedResult)
     {
         base.P2Test(fileName, expectedResult);

@@ -99,11 +99,12 @@ public class Task02Solver : ITaskSolver
         return true;
     }
 
-    private int GetSafetyWithToleranceLinear()
+    private int GetSafetyWithToleranceLinear(int tolerateFailures)
     {
-        return _reports.Count(r => IsReportSafe(r, 1));
+        return _reports.Count(r => IsReportSafe(r, tolerateFailures));
     }
 
+    // Original simple but less effective solution
     private int GetSafetyWithToleranceQuadratic()
     {
         return _reports.Count(r =>
@@ -124,11 +125,11 @@ public class Task02Solver : ITaskSolver
     
     public long SolveTaskP1()
     {
-        return GetSafetyWithToleranceLinear();
+        return GetSafetyWithToleranceLinear(0);
     }
     
     public long SolveTaskP2()
     {
-        return GetSafetyWithToleranceQuadratic();
+        return GetSafetyWithToleranceLinear(1);
     }
 }
