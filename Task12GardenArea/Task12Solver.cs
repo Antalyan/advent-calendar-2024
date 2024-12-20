@@ -124,4 +124,8 @@ public class Task12Solver : ITaskSolver
     {
         return CountAreaPrice(CountAdvancedClusterPrice);
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

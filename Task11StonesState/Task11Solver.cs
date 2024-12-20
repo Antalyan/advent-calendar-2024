@@ -72,4 +72,8 @@ public class Task11Solver : ITaskSolver
     {
         return IterateStones(75);
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

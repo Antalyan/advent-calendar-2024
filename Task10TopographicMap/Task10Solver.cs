@@ -45,4 +45,8 @@ public class Task10Solver : ITaskSolver
         var (_, paths) = _map.CountPathSumsBfs(0, 9);
         return paths;
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

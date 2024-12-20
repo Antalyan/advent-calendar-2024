@@ -13,7 +13,7 @@ public class Task05UnitTest: TaskUnitTestCommon
     [Theory]
     [InlineData("T05-Sample01", 143)]
     [InlineData("T05-Fin", 5651)]
-    public override void P1Test(string fileName, long expectedResult)
+    public override void P1Test(string fileName, long expectedResult,  params object[] solverParams)
     {
         base.P1Test(fileName, expectedResult);
     }
@@ -21,7 +21,7 @@ public class Task05UnitTest: TaskUnitTestCommon
     [Theory]
     [InlineData("T05-Sample01", 123)]
     [InlineData("T05-Fin", 4743)]
-    public override void P2Test(string fileName, long expectedResult)
+    public override void P2Test(string fileName, long expectedResult,  params object[] solverParams)
     {
         base.P2Test(fileName, expectedResult);
     }

@@ -73,4 +73,8 @@ public class Task06Solver : ITaskSolver
     {
         return GetPossibleObstacleCount();
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

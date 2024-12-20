@@ -23,4 +23,8 @@ public class Task09Solver : ITaskSolver
         _diskMap.DefragmentDiskByFiles();
         return _diskMap.CountCheckSum();
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

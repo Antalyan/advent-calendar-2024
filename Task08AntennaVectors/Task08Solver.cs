@@ -107,4 +107,8 @@ public class Task08Solver : ITaskSolver
     {
         return CountAntiNodePositions(false);
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

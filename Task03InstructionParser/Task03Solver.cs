@@ -82,4 +82,8 @@ public class Task03Solver : ITaskSolver
     {
         return EvaluateInputWithEnables();
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

@@ -83,4 +83,8 @@ public class Task01Solver: ITaskSolver
         _listB.Sort();
         return GetSimilarityScore();
     }
+
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

@@ -83,4 +83,8 @@ public class Task13Solver : ITaskSolver
         IncreasePrizePositions(10000000000000);
         return CountTokens();
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

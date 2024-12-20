@@ -139,4 +139,8 @@ public class Task04Solver : ITaskSolver
     {
         return CountCrossWords('A', 'M', 'S');
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

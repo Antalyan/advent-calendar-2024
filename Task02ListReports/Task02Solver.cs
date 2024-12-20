@@ -132,4 +132,8 @@ public class Task02Solver : ITaskSolver
     {
         return GetSafetyWithToleranceLinear(1);
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

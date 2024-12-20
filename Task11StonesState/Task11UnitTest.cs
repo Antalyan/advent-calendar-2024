@@ -13,14 +13,14 @@ public class Task11UnitTest: TaskUnitTestCommon
     [Theory]
     [InlineData("T11-Sample01", 55312)]
     [InlineData("T11-Fin", 217812)]
-    public override void P1Test(string fileName, long expectedResult)
+    public override void P1Test(string fileName, long expectedResult,  params object[] solverParams)
     {
         base.P1Test(fileName, expectedResult);
     }
     
     [Theory]
     [InlineData("T11-Fin", 259112729857522)]
-    public override void P2Test(string fileName, long expectedResult)
+    public override void P2Test(string fileName, long expectedResult,  params object[] solverParams)
     {
         base.P2Test(fileName, expectedResult);
     }

@@ -92,4 +92,8 @@ public class Task05Solver : ITaskSolver
     {
         return CountMiddleNumbersOfFixedSequences();
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }

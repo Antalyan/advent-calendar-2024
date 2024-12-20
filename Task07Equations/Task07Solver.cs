@@ -61,4 +61,8 @@ public class Task07Solver : ITaskSolver
     {
         return CountSolvableEquationsSum(true);
     }
+    
+    public void SetSolverParams(params object[] solverParams)
+    {
+    }
 }
