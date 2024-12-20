@@ -30,6 +30,43 @@ public class Task14Solver : ITaskSolver
         }
     }
 
+    private void PrintPositions(HashSet<Coordinate> occupiedPositions)
+    {
+        foreach (var y in Enumerable.Range(0, _areaSize.Y))
+        {
+            foreach (var x in Enumerable.Range(0, _areaSize.X))
+            {
+                Console.Write(occupiedPositions.Contains((x, y)) ? '#' : '.');
+            }
+
+            Console.Write(Environment.NewLine);
+        }
+    }
+
+    private Coordinate GetYMirroredPosition(Coordinate coord)
+    {
+        return (_areaSize.X - coord.X - 1, coord.Y);
+    }
+
+    private int GetSymmetryScore(HashSet<Coordinate> occupiedPositions)
+    {
+        int successful = 0;
+        int unsuccessful = 0;
+        foreach (var coordinate in occupiedPositions)
+        {
+            if (occupiedPositions.Contains(GetYMirroredPosition(coordinate)))
+            {
+                successful += 1;
+            }
+            else
+            {
+                unsuccessful += 1;
+            }
+        }
+
+        return ((successful * 100) / (unsuccessful + successful!));
+    }
+
     private int CountSafetyScore(int turns)
     {
         IEnumerable<Coordinate> occupiedPositions = _robots.Select(r => r.CountPositionAfterTurns(turns, _areaSize));
@@ -40,6 +77,23 @@ public class Task14Solver : ITaskSolver
         return quadrantCounts.Aggregate(1, (product, count) => product * count);
     }
 
+    private void PrintTreeCandidates()
+    {
+        foreach (var i in Enumerable.Range(1, 50000))
+        {
+            HashSet<Coordinate> occupiedPositions =
+                _robots.Select(r => r.CountPositionAfterTurns(i, _areaSize)).ToHashSet();
+            // Estimation: Christmas tree should be symmetric by Y axis
+            if (GetSymmetryScore(occupiedPositions) > 30)
+            {
+                Console.WriteLine(
+                    $"Candidate population: {i} with participation of {GetSymmetryScore(occupiedPositions)}% of robots");
+                PrintPositions(occupiedPositions);
+                Console.WriteLine(Environment.NewLine);
+            }
+        }
+    }
+
     public long SolveTaskP1()
     {
         return CountSafetyScore(100);
@@ -47,9 +101,11 @@ public class Task14Solver : ITaskSolver
 
     public long SolveTaskP2()
     {
+        PrintTreeCandidates();
+        // This task has no computable solution;
         return 0;
     }
-    
+
     public void SetSolverParams(params object[] solverParams)
     {
         _areaSize = (Coordinate)(solverParams[0], solverParams[1]);
