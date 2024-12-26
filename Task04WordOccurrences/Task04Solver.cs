@@ -101,7 +101,7 @@ public class Task04Solver : ITaskSolver
             }
 
             char mirrorExpectedLetter = letterOnCurrentPos == borderLetter1 ? borderLetter2 : borderLetter1;
-            var mirrorCoord = CoordinationHelper.GetMirroredCoordModifier(modx, mody);
+            var mirrorCoord = (modx, mody).Mirror();
             Coordinate mirroredPos = (coordinate.X + mirrorCoord.X, coordinate.Y + mirrorCoord.Y);
 
             if (!CheckLetterOnPosition(mirroredPos, mirrorExpectedLetter))

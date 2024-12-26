@@ -41,11 +41,6 @@ public static class CoordinationHelper
         return GetLineCoordModifiers().Concat(GetDiagonalCoordModifiers().ToArray()).ToArray();
     }
 
-    public static Coordinate GetMirroredCoordModifier(int x, int y)
-    {
-        return (-x, -y);
-    }
-
     public static Coordinate MapDirToCoordModifier(Direction dir)
     {
         return dir switch

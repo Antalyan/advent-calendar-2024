@@ -2,9 +2,76 @@ using AdventCalendar2024.Shared;
 
 namespace AdventCalendar2024.Task15Warehouse;
 
-public class WarehouseWalker(Dictionary<Coordinate, WarehouseElement> warehouse, List<Direction> commands, Coordinate maxPosition)
+public class WarehouseWalker(
+    Dictionary<Coordinate, WarehouseElement> warehouse,
+    List<Direction> commands,
+    Coordinate maxPosition)
 {
     public Dictionary<Coordinate, WarehouseElement> Warehouse { get; } = warehouse;
+    public List<Direction> Commands { get; } = commands;
+    public Coordinate MaxPosition { get; } = maxPosition;
+
+    // Returns true iff there are empty positions in direction given by @param coordModifier, so the robot can move
+    private bool HasEmptyPosition(Coordinate positionFrom, Coordinate coordModifier)
+    {
+        Coordinate nextPosition = (positionFrom.X + coordModifier.X, positionFrom.Y + coordModifier.Y);
+
+        while (nextPosition.IsInsideGrid(MaxPosition) && Warehouse[nextPosition] != WarehouseElement.Wall)
+        {
+            switch (Warehouse[nextPosition])
+            {
+                case WarehouseElement.Empty:
+                    return true;
+                case WarehouseElement.BoxLeftPart when coordModifier.X == 0:
+                    return HasEmptyPosition((nextPosition.X, nextPosition.Y), coordModifier) &&
+                           HasEmptyPosition((nextPosition.X + 1, nextPosition.Y), coordModifier);
+                case WarehouseElement.BoxRightPart when coordModifier.X == 0:
+                    return HasEmptyPosition((nextPosition.X, nextPosition.Y), coordModifier) &&
+                           HasEmptyPosition((nextPosition.X - 1, nextPosition.Y), coordModifier);
+                default:
+                    nextPosition = (nextPosition.X + coordModifier.X, nextPosition.Y + coordModifier.Y);
+                    break;
+            }
+        }
+
+        return false;
+    }
+
+    private void ProcessMovementFromPosition(Coordinate positionFrom, Coordinate coordModifier, bool nestedBoxes = true)
+    {
+        switch (Warehouse[positionFrom])
+        {
+            case WarehouseElement.Wall:
+                throw new Exception($"Illegal movement on wall with position {positionFrom}");
+            case WarehouseElement.BoxLeftPart:
+                if (coordModifier.X == 0 && nestedBoxes)
+                {
+                    ProcessMovementFromPosition((positionFrom.X + 1, positionFrom.Y), coordModifier, false);
+                }
+
+                ProcessMovementFromPosition((positionFrom.X + coordModifier.X, positionFrom.Y + coordModifier.Y),
+                    coordModifier);
+                break;
+            case WarehouseElement.BoxRightPart:
+                if (coordModifier.X == 0 && nestedBoxes)
+                {
+                    ProcessMovementFromPosition((positionFrom.X - 1, positionFrom.Y), coordModifier, false);
+                }
+
+                ProcessMovementFromPosition((positionFrom.X + coordModifier.X, positionFrom.Y + coordModifier.Y),
+                    coordModifier);
+                break;
+            case WarehouseElement.Box:
+            case WarehouseElement.Robot:
+                ProcessMovementFromPosition((positionFrom.X + coordModifier.X, positionFrom.Y + coordModifier.Y),
+                    coordModifier);
+                break;
+        }
+
+        Warehouse[positionFrom] = nestedBoxes
+            ? Warehouse[(positionFrom.X - coordModifier.X, positionFrom.Y - coordModifier.Y)]
+            : WarehouseElement.Empty;
+    }
 
     private Coordinate WalkInDirection(Direction direction, Coordinate positionFrom)
     {
@@ -16,46 +83,32 @@ public class WarehouseWalker(Dictionary<Coordinate, WarehouseElement> warehouse,
             Direction.Left => (-1, 0),
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
-        
-        Coordinate nextPosition = (positionFrom.X + coordModifier.X, positionFrom.Y + coordModifier.Y);
-        Coordinate? emptyPosition = null;
-        while (nextPosition.IsInsideGrid(maxPosition) && Warehouse[nextPosition] != WarehouseElement.Wall)
-        {
-            if (Warehouse[nextPosition] == WarehouseElement.Empty)
-            {
-                emptyPosition = nextPosition;
-                break;
-            }
-            
-            nextPosition = (nextPosition.X + coordModifier.X, nextPosition.Y + coordModifier.Y);
-        }
 
-        if (emptyPosition == null)
+        // var positions = Enumerable.Range(1, int.MaxValue) 
+        //     .Select(i => (positionFrom.X + coordModifier.X * i, positionFrom.Y + coordModifier.Y * i))
+        //     .TakeWhile(p => p.IsInsideGrid(maxPosition) && Warehouse[p] != WarehouseElement.Wall);
+        //
+        // Coordinate emptyPosition = positions.FirstOrDefault(p => Warehouse[p] == WarehouseElement.Empty, (-1, -1));
+        // if (emptyPosition == (-1, -1))
+        // {
+        //     return positionFrom;
+        // }
+
+        if (HasEmptyPosition(positionFrom, coordModifier) == false)
         {
             return positionFrom;
         }
-        
-        Warehouse[positionFrom] = WarehouseElement.Empty;
-        Warehouse[(positionFrom.X + coordModifier.X, positionFrom.Y + coordModifier.Y)] = WarehouseElement.Robot;
-        
-        Coordinate currentPosition = (positionFrom.X + coordModifier.X, positionFrom.Y + coordModifier.Y);
-        while (currentPosition != emptyPosition)
-        {
-            currentPosition = (currentPosition.X + coordModifier.X, currentPosition.Y + coordModifier.Y);
-            if (!currentPosition.IsInsideGrid(maxPosition))
-            {
-                break;
-            }
-            warehouse[currentPosition] = WarehouseElement.Box;
-        }
 
+        ProcessMovementFromPosition((positionFrom.X + coordModifier.X, positionFrom.Y + coordModifier.Y),
+            coordModifier);
+        Warehouse[positionFrom] = WarehouseElement.Empty;
         return (positionFrom.X + coordModifier.X, positionFrom.Y + coordModifier.Y);
     }
-    
+
     public void WalkByCommands()
     {
-        var currentPosition = warehouse.First(c => c.Value == WarehouseElement.Robot).Key;
-        foreach (var command in commands)
+        var currentPosition = Warehouse.First(c => c.Value == WarehouseElement.Robot).Key;
+        foreach (var command in Commands)
         {
             currentPosition = WalkInDirection(command, currentPosition);
         }
@@ -63,6 +116,7 @@ public class WarehouseWalker(Dictionary<Coordinate, WarehouseElement> warehouse,
 
     public long SumBoxCoordinates()
     {
-        return Warehouse.Where(w => w.Value == WarehouseElement.Box).Select(w => w.Key.X + 100 * w.Key.Y).Sum();
+        return Warehouse.Where(w => w.Value is WarehouseElement.Box or WarehouseElement.BoxLeftPart)
+            .Select(w => w.Key.X + 100 * w.Key.Y).Sum();
     }
 }

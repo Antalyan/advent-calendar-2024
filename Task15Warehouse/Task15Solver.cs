@@ -55,6 +55,36 @@ public class Task15Solver : ITaskSolver
         _warehouseWalker = new WarehouseWalker(warehouse, commands, maxPosition);
     }
 
+    private void EnlargeWarehouse()
+    {
+        var newWarehouse = new Dictionary<Coordinate, WarehouseElement>();
+        foreach (var (coordinate, element) in _warehouseWalker.Warehouse)
+        {
+            WarehouseElement leftElement = element switch
+            {
+                WarehouseElement.Wall => WarehouseElement.Wall,
+                WarehouseElement.Empty => WarehouseElement.Empty,
+                WarehouseElement.Box => WarehouseElement.BoxLeftPart,
+                WarehouseElement.Robot => WarehouseElement.Robot,
+                _ => throw new Exception($"Warehouse symbol {element} not recognized")
+            };
+            newWarehouse.Add((coordinate.X * 2, coordinate.Y), leftElement);
+            
+            WarehouseElement rightElement = element switch
+            {
+                WarehouseElement.Wall => WarehouseElement.Wall,
+                WarehouseElement.Empty => WarehouseElement.Empty,
+                WarehouseElement.Box => WarehouseElement.BoxRightPart,
+                WarehouseElement.Robot => WarehouseElement.Empty,
+                _ => throw new Exception($"Warehouse symbol {element} not recognized")
+            };
+            newWarehouse.Add((coordinate.X * 2 + 1, coordinate.Y), rightElement);
+        }
+
+        _warehouseWalker = new WarehouseWalker(newWarehouse, _warehouseWalker.Commands,
+            (_warehouseWalker.MaxPosition.X * 2, _warehouseWalker.MaxPosition.Y));
+    }
+
     public long SolveTaskP1()
     {
         _warehouseWalker.WalkByCommands();
@@ -63,7 +93,9 @@ public class Task15Solver : ITaskSolver
 
     public long SolveTaskP2()
     {
-        return 0;
+        EnlargeWarehouse();
+        _warehouseWalker.WalkByCommands();
+        return _warehouseWalker.SumBoxCoordinates();
     }
 
     public void SetSolverParams(params object[] solverParams)

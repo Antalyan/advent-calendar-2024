@@ -7,4 +7,9 @@ public static class CoordinateExtensions
         return coordinate.X >= 0 && coordinate.Y >= 0 && coordinate.X <= maxPosition.X &&
                coordinate.Y <= maxPosition.Y;
     }
+    
+    public static Coordinate Mirror(this Coordinate coordinate)
+    {
+        return (-coordinate.X, -coordinate.Y);
+    }
 }

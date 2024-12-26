@@ -5,5 +5,7 @@ public enum WarehouseElement
     Empty,
     Wall,
     Box,
+    BoxLeftPart,
+    BoxRightPart,
     Robot
 }
