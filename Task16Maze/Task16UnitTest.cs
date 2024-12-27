@@ -20,12 +20,12 @@ public class Task16UnitTest : TaskUnitTestCommon
         base.P1Test(fileName, expectedResult, solverParams);
     }
 
-    // [Theory]
-    // [InlineData("T15-Sample02", 9021)]
-    // [InlineData("T15-Sample03", 618)]
-    // [InlineData("T15-Fin", 1452348)]
-    // public override void P2Test(string fileName, long expectedResult,  params object[] solverParams)
-    // {
-    //     base.P2Test(fileName, expectedResult, solverParams);
-    // }
+    [Theory]
+    [InlineData("T16-Sample01", 45)]
+    [InlineData("T16-Sample02", 64)]
+    [InlineData("T16-Fin", 527)]
+    public override void P2Test(string fileName, long expectedResult,  params object[] solverParams)
+    {
+        base.P2Test(fileName, expectedResult, solverParams);
+    }
 }

@@ -8,7 +8,7 @@ public class Task16Solver : ITaskSolver
     private Coordinate _start;
     private Coordinate _end;
     private Coordinate _maxPosition;
-    
+
     public void LoadTaskDataFromFile(string filePath)
     {
         using var reader = new StreamReader(filePath);
@@ -16,7 +16,7 @@ public class Task16Solver : ITaskSolver
 
         int lineNumber = 0;
         _maxPosition = (0, 0);
-        
+
         while ((line = reader.ReadLine())?.Length > 0)
         {
             // Positions are numbered from top left corner
@@ -52,7 +52,9 @@ public class Task16Solver : ITaskSolver
 
     public long SolveTaskP2()
     {
-        return 0;
+        var walker = new MazeWalker(_walkableTiles, _start, _end);
+        walker.FindShortestPathCostDijkstra(Direction.Right);
+        return walker.CountVerticesOnShortestPaths();
     }
 
     public void SetSolverParams(params object[] solverParams)
