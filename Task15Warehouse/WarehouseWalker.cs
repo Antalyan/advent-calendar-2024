@@ -84,16 +84,6 @@ public class WarehouseWalker(
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
 
-        // var positions = Enumerable.Range(1, int.MaxValue) 
-        //     .Select(i => (positionFrom.X + coordModifier.X * i, positionFrom.Y + coordModifier.Y * i))
-        //     .TakeWhile(p => p.IsInsideGrid(maxPosition) && Warehouse[p] != WarehouseElement.Wall);
-        //
-        // Coordinate emptyPosition = positions.FirstOrDefault(p => Warehouse[p] == WarehouseElement.Empty, (-1, -1));
-        // if (emptyPosition == (-1, -1))
-        // {
-        //     return positionFrom;
-        // }
-
         if (HasEmptyPosition(positionFrom, coordModifier) == false)
         {
             return positionFrom;
